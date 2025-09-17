@@ -17,18 +17,27 @@ library(janitor)
 ### Task 2: Load the crime dataset from https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/md_annual_crime.csv
 
 ```{r}
-crimes <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/md_annual_crime.csv") |> clean_names()
+
+library(readr)   
+library(janitor) 
+
+crimes <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/main/data/md_annual_crime.csv") |>
+  clean_names()
+
 ```
 
 
 ### Task 3: Use janitor to clean up the column names
 
-
+names(crimes)
 
 ### Task 4: Calculate the total crime rate for each year (picking our unit!)
 
 ```{r}
-crimes |> mutate(total_rate = grand_total/population * 10000)
+install.packages("dplyr")
+library(dplyr)
+crimes <- crimes |> 
+  mutate(total_rate = grand_total/population * 10000)
 ```
 
 
@@ -36,7 +45,12 @@ crimes |> mutate(total_rate = grand_total/population * 10000)
 ### Task 5: Calculate the violent and property crime rates for each year (same unit)
 
 ```{r}
-crimes_with_rates <- crimes |> mutate(violent_rate = violent_crime_total/population * 10000, property_rate = property_crime_total/population * 10000)
+crimes <- crimes %>%
+  mutate(
+    violent_rate  = violent_crime_total / population * 10000,
+    property_rate = property_crime_total / population * 10000
+  )
+
 ```
 
 
@@ -45,8 +59,7 @@ crimes_with_rates <- crimes |> mutate(violent_rate = violent_crime_total/populat
 
 Write a few sentences about what you found in the data. What years had the highest crime rates? What years had the lowest crime rates? Does the pattern match your expectations?
 
-
-
+I found that crime was gradually going up throughout the years, but then it dropped back down. 2020 was the year with the lowest crime rate and 1980 was the year with the highest crime rate. This data does not match my expectations because I feel like we live in such a violent society now, it's surprising to see it's always been violent, even in the 80s.
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
 
