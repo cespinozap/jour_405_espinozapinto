@@ -9,6 +9,8 @@ In this assignment, we will be working with a dataset of total crimes reported b
 You will need to load the tidyverse library and the janitor library
 
 ```{r}
+library(tidyverse)
+library(janitor)
 ```
 
 Then you'll load the data from the web. The URL for the data is: https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/md_cities_crime_2019_2020.csv. You will create a dataframe called `md_cities` that contains the data from this URL.
@@ -16,19 +18,34 @@ Then you'll load the data from the web. The URL for the data is: https://raw.git
 ### Task 2: Load the Data
 
 ```{r}
+md_cities <- readr::read_csv(
+  "https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/md_cities_crime_2019_2020.csv"
+) %>%
+  clean_names()
+  names(md_cities)
+  glimpse(md_cities)
+  head(md_cities, 10)
 ```
 ### Task 3: Calculating Rates
 
 Calculate violent and property crime rates for each city for both years using `mutate()`. You'll create four new columns: `violent_rate_2019`, `property_rate_2019`, `violent_rate_2020`, and `property_rate_2020`. You'll need to figure out the proper unit rate, given that there are varying populations. There's no perfect choice; choose the one that works best for you. Save the results to a new dataframe called `md_cities_rates`.
 
 ```{r}
+md_cities_rates <- md_cities %>%
+  mutate(
+    violent_rate_2019 = if_else(pop2019 > 0, violent2019 / pop2019 * 10000, NA_real_),
+    property_rate_2019 = if_else(pop2019 > 0, property2019 / pop2019 * 10000, NA_real_),
+    violent_rate_2020 = if_else(pop2020 > 0, violent2020 / pop2020 * 10000, NA_real_),
+    property_rate_2020 = if_else(pop2020 > 0, property2020 / pop2020 * 10000, NA_real_)
+  )
+
 ```
 
 ### Task 4: Describe the Rates
 
 Examine the new dataframe, `md_cities_rates`, by clicking on it in the Environment tab in RStudio and sorting by the rate columns. Write a couple of sentences about the results, comparing and contrasting the cities with the highest rates (both violent and property) in 2019 and 2020. Do you see any patterns? What does this tell you about crime in Maryland cities? What's the story here?
 
-ANSWER HERE
+Baltimore City has quite the crime rate, taking on the highest values in the data. The most obvious pattern here is the population because with a higher population, Baltimore is expected to have a higher crime rate. It's actually quite shocking how big of a city Baltimore is. My story would emphasize the raise in property crime from 2019 to 2020 and the drop of violent crimes.
 
 
 ### Task 5: Calculate Percentage Change
@@ -36,19 +53,39 @@ ANSWER HERE
 Let's add two percentage change columns to your dataframe: one for violent crime rates and one for property crime rates. You'll calculate the percentage change between 2019 and 2020 for each city. Save the results to a new dataframe called `md_cities_change`.
 
 ```{r}
+
+md_cities_change <- md_cities_rates %>%
+  mutate(
+    pct_change_violent = case_when(
+      is.na(violent_rate_2019) ~ NA_real_,
+      violent_rate_2019 == 0 ~ NA_real_,   
+      TRUE ~ (violent_rate_2020 - violent_rate_2019) / violent_rate_2019 * 100
+    ),
+    pct_change_property = case_when(
+      is.na(property_rate_2019) ~ NA_real_,
+      property_rate_2019 == 0 ~ NA_real_,
+      TRUE ~ (property_rate_2020 - property_rate_2019) / property_rate_2019 * 100
+    )
+  )
+
 ```
 
 ### Task 7: Describe Percentage Changes
 
 Look at the `md_cities_change` dataframe by clicking on it in the Environment tab in RStudio. Write a couple of sentences describing the percentage change results. What's more interesting here, the patterns or the outliers? What's the story in the data?
 
-ANSWER HERE
+There was a lot of negative percentage change of crime in 2020. But, there were some cities that stuck out to me as having a higher than expected percentage change. Edmonston and Poolesville had a really high percentage change of violent crimes. But, these high numbers are just a reflection of the population. Poolesville had 6 more violent crimes in 2020 than 2019, resulting in a high percentage change. I think what's interesting here are the cities that have no crime reported.
 
 ### Task 8: Tell the Best Story
 
 Write up a lede and nutgraf of a story with the _best_ story idea you've found in this assignment. The lede should be a single sentence that summarizes the most important information in the data. The nutgraf should be a paragraph that provides more context and explains why the data is important.
 
-ANSWER HERE
+Maryland city crime rate report points out that  almost every city has a higher number of property crimes over violent crimes.
+
+Baltimore City had a number of 18,540 property crimes, almost twice as much crime as the number of violent crimes, 9,402.
+Likewise, Frederick had a number of 15 violent crimes with a property crime rate almost 10 times higher, 141. 
+
+There is a common pattern between larger cities and a higher number of crime. In most cases, there is more property crime being committed than violent crimes. Most of the data reflects that the gap between property crime and violent crime grows higher as population rises.
 
 ### Task 9: Save Your Work and Put it on GitHub
 
