@@ -90,3 +90,25 @@ There is a common pattern between larger cities and a higher number of crime. In
 ### Task 9: Save Your Work and Put it on GitHub
 
 Save this notebook, then commit it to your local repository. Push the changes to your GitHub repository and submit the URL for this file in ELMS.
+
+### Task 10: Your task will be to take the violent crime rates for 2020 and do three things:
+
+Using the 2020 violent crime rate, calculate the percentiles using `ntile()`. Save the results to a new dataframe called `md_cities_percentiles`. How many cities are above the 90th percentile?
+```{r}
+md_cities_percentiles <- md_cities_change %>%
+  mutate(violent_2020_percentile = ntile(violent_rate_2020, 100))
+
+cities_above_90 <- md_cities_percentiles %>%
+  filter(violent_2020_percentile > 90) %>%
+  nrow()
+cities_above_90
+
+```
+Calculate the Interquartile Range of the 2020 violent crime rate using `summarize()` and R's `IQR()` function. The syntax is similar to how `mean()` works.
+```{r}
+md_cities_change %>%
+  summarize(iqr_violent_2020 = IQR(violent_rate_2020, na.rm = TRUE))
+```
+Do the results change your best story idea from the previous assignment? Why or why not?
+
+The results are different than what I expected but because there are certain cities that still stick out in the data and they coincide with the highest crime rates. But, it takes away all the attention on Baltimore and it's high number of crimes. I would change my best story idea to not just focus on Baltimore, but other cities in the 90th percentile.
