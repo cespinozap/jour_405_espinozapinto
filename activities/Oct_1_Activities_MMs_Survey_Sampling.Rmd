@@ -1,6 +1,6 @@
 ---
 title: "Oct 1 Activities: M&Ms; Survey; Sampling"
-date: 9-30-2025
+date: 10-1-2025
 ---
 
 All three class activities are on this .rmd notebook
@@ -26,9 +26,7 @@ Then discuss and try to answer these questions:
 
 Write your answer below. And then you may eat the M&Ms.
 
-**A:**
-
-------------------------------------------------------------------------------
+My group's mean was far from the true proportion of 0.5. Each group will get a different result because nearly none of the m&m bags are the same. When we combine all groups, it's still not nearly the same. Each bag is distinct. This relates to polls and surveys in real life because most of the results are unexpected and random.
 
 # Activity #2:
 
@@ -41,9 +39,7 @@ https://president.umd.edu/internal/belonging
 
 Specifically, focus on the "Sample Description" section and the Appendix. Discuss the differences and between the population and the sample, and what the document says about how the survey attempted to deal with them. Are there any decisions described in the document that raise questions in your minds? Detail the differences you see and your understanding of the methods they employed (it's ok if you don't understand all of them), and add your questions. You should discuss this as a pair but submit individually.
 
-**A:**
-
-------------------------------------------------------------------------------
+The difference between the population and the sample is that the population is UMD as a whole and the sample, is the amount of people who actually completed the survey. The survey only reflected a small percentage of the overall population. The demographic information raises a question of how reliable this survey should be used to represent UMD because the number of respondents per race is drastically different. By asking respondents about whether or not they are first generation, we can also get an idea of what kind of background each respondent is coming from, so this was an interesting thing I observed for some kind of story idea. I believe that the more questions they asked, the better of an idea they could have of who's actually interacting with the survey, so that was a good method. But, my question is whether or not we can relly rely on this data to represent UMD as a whole because of the limited amount of data we have to base our conclusions off of.
 
 # TASK 3: SAMPLING
 
@@ -53,8 +49,8 @@ Based on the class sampling demo (available on Elms), sample data from a populat
 
 **A**
 ```{r}
-
-
+library(tidyverse)
+set.seed(2025)
 ```
 
 
@@ -62,6 +58,11 @@ Based on the class sampling demo (available on Elms), sample data from a populat
 
 **A**
 ```{r}
+population <- tibble(
+  id = 1:1000,
+  age = sample(18:80, size = 1000, replace = TRUE)  
+)
+population %>% summarise(n = n(), min_age = min(age), max_age = max(age))
 
 
 ```
@@ -69,6 +70,9 @@ Based on the class sampling demo (available on Elms), sample data from a populat
 ### Task 3: Sample 100 rows of data from the dataset
 **A**
 ```{r}
+sample_100 <- population %>% slice_sample(n = 100)
+
+sample_100 %>% slice_head(n = 10)
 
 
 ```
@@ -77,6 +81,13 @@ Based on the class sampling demo (available on Elms), sample data from a populat
 ### Task 4: Calculate the mean age and standard deviation of the sample
 **A**
 ```{r}
+sample_stats <- sample_100 %>%
+  summarise(
+    sample_n = n(),
+    sample_mean_age = mean(age),
+    sample_sd_age = sd(age)
+  )
+sample_stats
 
 
 ```
@@ -85,6 +96,14 @@ Based on the class sampling demo (available on Elms), sample data from a populat
 ### Task 5: Calculate the mean age and standard deviation of the population
 **A**
 ```{r}
+population_stats <- population %>%
+  summarise(
+    pop_n = n(),
+    pop_mean_age = mean(age),
+    pop_sd_age = sd(age)
+  )
+
+population_stats
 
 
 ```
@@ -93,12 +112,14 @@ Based on the class sampling demo (available on Elms), sample data from a populat
 ### Task 6: Compare the sample and population statistics
 **A**
 ```{r}
+comparison <- bind_cols(population_stats, sample_stats)
+comparison
 
 
 ```
 
 Compare the means and standard deviations. Are they similar? Go back and re-run the sampling and statistics calculations with a smaller sample size. How do the results change?
 
-**A**:
+The standard deviation will vary and the mean will relatively stay close to the population size, but with a smaller sample size will have more variety and change. 
 
 When finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
