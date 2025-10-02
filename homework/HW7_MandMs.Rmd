@@ -9,37 +9,78 @@ In this assignment, you'll be picking up where you left off with the M&Ms activi
 ### Task 1: Load the tidyverse
 
 ```{r}
-
+library(tidyverse)
 ```
 
 
 ### Task 2: Load an M&Ms dataset from https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/mandms.csv
 ```{r}
+mandms <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/mandms.csv")
+mandms
 
 ```
 
 
 ### Task 3: Sample 5 rows of data from the dataset, and then sample 10 rows, saving each to separate dataframes called sample5 and sample10. Be sure to use set.seed(1234) before you start.
 ```{r}
+set.seed(1234)
+sample5 <- sample_n(mandms, 5)
+sample10 <- sample_n(mandms, 10)
 
+sample5
+sample10
 ```
 
 
 ### Task 4: Calculate the mean, median and standard deviation of red M&Ms from each of the samples.
 ```{r}
+sample5_stats <- sample5 %>%
+  summarise(
+    mean_red = mean(red),
+    median_red = median(red),
+    sd_red = sd(red)
+  )
 
+sample10_stats <- sample10 %>%
+  summarise(
+    mean_red = mean(red),
+    median_red = median(red),
+    sd_red = sd(red)
+  )
+
+sample5_stats
+sample10_stats
 ```
 
 
 ### Task 5: Calculate the mean, median and standard deviation of red M&Ms from the population
 
 ```{r}
+population_stats <- mandms %>%
+  summarise(
+    mean_red = mean(red),
+    median_red = median(red),
+    sd_red = sd(red)
+  )
 
+population_stats
 ```
 
 ### Task 6: Make three histograms: one each for sample5, sample10 and the original dataset. Include a headline. Use a consistent binwidth.
 
 ```{r}
+
+ggplot(sample5, aes(x = red)) +
+  geom_histogram(binwidth = 2, fill = "pink", color = "yellow") +
+  labs(title = "Sample of 5: Red M&Ms")
+
+ggplot(sample10, aes(x = red)) +
+  geom_histogram(binwidth = 2, fill = "lightgreen", color = "lightblue") +
+  labs(title = "Sample of 10: Red M&Ms")
+
+ggplot(mandms, aes(x = red)) +
+  geom_histogram(binwidth = 2, fill = "beige", color = "tan") +
+  labs(title = "Population: Red M&Ms")
 
 ```
 
@@ -49,11 +90,18 @@ In this assignment, you'll be picking up where you left off with the M&Ms activi
 
 Compare the three sets of means, standard deviations and histograms. Which are more helpful to you in understanding the accuracy of the samples?
 
+The larger sample gave numbers closer to the overall population, but I think by the histogram we can see how the smaller the sample size gets, the less distributed the data becomes.
+
 What does this exercise tell you about the relationship between sample size and estimate accuracy?
+
+The population has a larger range data than the sample sizes. The bigger the sample sizes the more data we have. The appearance of the histogram of the sample size of 5 could be misleading when representing the distribution because in most cases, small samples misrepresent the population.
 
 How does random sampling introduce variation into statistical estimates?
 
+There is a variety of responses expected from random sampling, because each sample group is distinct and will have different results. There will be more variation in the larger samples because each m&m bag varies from one another.
+
 If you repeated this process, would the samples always be identical? Why or why not?
 
+No. The samples should be different, that's the whole point of a random sampling is that you don't know what you're going to get but that's the whole purpose of the experiment to see the probability of each m&m color. The mean, standard deviation and histogram data will vary depending on the sample.
 
 When finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
