@@ -1,10 +1,10 @@
 ---
 title: "HW9_TestScores"
 Name: Derek Willis/Rob Wells
-Date: 10/21/2025
+Date: 10/28/2025
 ---
 
-name: REPLACE WITH YOUR NAME
+name: Carla Espinoza-Pinto
 
 
 ```{r setup, include=FALSE}
@@ -28,9 +28,9 @@ As a journalist, you need to determine: **Is there statistical evidence that rea
 Before you can run this codeblock, you will need to fill in a value where it says REPLACE_ME. That value can be found in the introduction.
 
 ```{r}
-# Known information about reading scores before the new program
-prior_mean <- REPLACE_ME  # average score
-prior_sd <- REPLACE_ME     # standard deviation
+
+prior_mean <- 72.6  # average score
+prior_sd <- 4.8     # standard deviation
 
 # Reading scores after implementing the new program (12 classrooms)
 new_scores <- c(74, 76, 73, 75, 78, 77, 74, 79, 75, 76, 77, 75) # Replace with the actual scores
@@ -48,6 +48,7 @@ score_data
 ### Reflection Question 1:  (2 points)
 Based on just looking at the score_data dataframe, have test scores improved? How can you tell?
 
+The test scores have indeed improved. I can tell because most of the test scores are above the average score of 72.6 and the scores themselves are overall higher.
 
 ## Task 2: Calculate key statistics  (2 points)
 
@@ -58,8 +59,8 @@ Like Task 1, you will need to replace values where it says REPLACE_ME before run
 # Calculate statistics based on the new reading scores
 new_stats <- score_data |> 
   summarise(
-    mean = mean(REPLACE_ME),
-    sd = sd(REPLACE_ME),
+    mean = mean(reading_score),
+    sd = sd(reading_score),
     n = n()
   )
 
@@ -69,7 +70,7 @@ new_stats
 ### Reflection Question 2: (3 points)
 Looking at the mean and standard deviation of the new scores compared to the previous statistics, what initial observations can you make? Provide examples from the data in your answer. What questions might these statistics raise for your reporting?
 
-
+Initially it is observed that the mean of 75.75 is higher than the previous average of 72.6. The standard deviation of 1.76 goes to show that the new test scores are closer and less spread apart. This obviously is a positive improvement in scores but the statistics could raise the question of, What new learning methods were implemented and which ones worked best for students?
 
 ## Task 3: Create a column chart  (1 points)
 
@@ -78,7 +79,7 @@ As before, replace any values marked REPLACE_ME based the instructions.
 
 ```{r}
 # STUDENT TASK: Choose an appropriate fill color for the bars
-my_fill_color <- "REPLACE_ME" # Replace with a color name like "royalblue", "darkgreen", etc.
+my_fill_color <- "pink" # Replace with a color name like "royalblue", "darkgreen", etc.
 
 # Create a visualization comparing new scores to the previous average
 score_data |> 
@@ -105,17 +106,19 @@ ggplot(aes(x = classroom, y = reading_score)) +
 ### Reflection Question 3: (3 points)
 Examine the chart you created, and suggest a better title based on the results of the data, not a description.
 
+Spike in Reading Scores after Implementation of Semester long program 
+
 ## Task 4: Perform a hypothesis test (2 points)
 
 This is where we formally test the superintendent's claim that reading scores have improved. Fill in the REPLACE_ME values as needed, beginning with your hypotheses.
 
 **Hypotheses:**
-Null: The new reading program REPLACE_ME
-Alternative: The new reading program REPLACE_ME
+Null: The new reading program didn't improve reading scores.
+Alternative: The new reading program improved reading scores.
 
 ```{r}
 # Set the significance level for your test
-alpha_level <- REPLACE_ME # Replace with the appropriate value
+alpha_level <- 0.05 # Replace with the appropriate value
 
 # Perform a one-sample t-test
 # Since we want to know if scores improved (increased), we use a one-sided test (alternative = "greater")
@@ -132,7 +135,8 @@ t_test_result
 ### Reflection Question 4:  (3 points)
 What does the p-value tell you, and what doesn't it tell you? How would you explain these results to a non-technical audience while maintaining accuracy?
 
-
+The p-value tells me the probability of seeing results as strong if the new reading program had no difference on reading scores.
+If the p-value is high, the improvement in reading scores is random. If it is low, then the improvement is stastically not random.
 
 ## Task 5: Interpreting the results for your news story (2 points)
 
@@ -149,7 +153,7 @@ ci <- t.test(score_data$reading_score)$conf.int
 # Create a tibble to display the key statistics for your story
 story_stats <- tibble(
   `Previous average` = prior_mean,
-  `New average` = mean(REPLACE_ME),
+  `New average` = mean(new_scores),
   `Improvement` = mean(new_scores) - prior_mean,
   `Percent change` = round(((mean(new_scores) - prior_mean) / prior_mean) * 100, 1),
   `p-value` = p_value,
@@ -167,6 +171,11 @@ story_stats
 ### Reflection Question 5: (4 points)
 Based on these statistics, what would be your headline and lead paragraph for this story? Is there evidence to support the superintendent's claim?
 
+New Reading Program leads to Higher Reading Scores
+
+A new reading program implemented across school districts has led to a rise in third-grade reading  average scores from 72.6 to 75.4. Statistically, it was proven that the improvement was not just a random, instead a result of the new program.
 
 ### Reflection Question 6:  (1 point)
 What metrics or outcomes beyond test scores might be important to track for assessing reading performance?
+
+Beyond test scores, metrics such as student's growth over time and feedback from teachers and retention rates of material. I would also see engagement between activities implemented in the program.
