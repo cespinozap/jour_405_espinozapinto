@@ -1,8 +1,11 @@
 ---
 title: "HW9_TestScores"
-name: REPLACE WITH YOUR NAME
-date: Aug 21, 2025
+Name: Derek Willis/Rob Wells
+Date: 10/21/2025
 ---
+
+name: REPLACE WITH YOUR NAME
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -42,11 +45,11 @@ score_data <- tibble(
 score_data
 ```
 
-### Reflection Question 1:
+### Reflection Question 1:  (2 points)
 Based on just looking at the score_data dataframe, have test scores improved? How can you tell?
 
 
-## Task 2: Calculate key statistics
+## Task 2: Calculate key statistics  (2 points)
 
 Like Task 1, you will need to replace values where it says REPLACE_ME before running any code.
 
@@ -63,12 +66,12 @@ new_stats <- score_data |>
 new_stats
 ```
 
-### Reflection Question 2:
-Looking at the mean and standard deviation of the new scores compared to the previous statistics, what initial observations can you make? What questions might these statistics raise for your reporting?
+### Reflection Question 2: (3 points)
+Looking at the mean and standard deviation of the new scores compared to the previous statistics, what initial observations can you make? Provide examples from the data in your answer. What questions might these statistics raise for your reporting?
 
 
 
-## Task 3: Create a column chart
+## Task 3: Create a column chart  (1 points)
 
 As before, replace any values marked REPLACE_ME based the instructions.
 
@@ -83,7 +86,7 @@ ggplot(aes(x = classroom, y = reading_score)) +
   geom_col(fill = my_fill_color, alpha = 0.8) +
   geom_hline(yintercept = prior_mean, color = "darkred", size = 1, linetype = "dashed") +
   annotate("text", x = 2, y = prior_mean - 1, 
-           label = "Previous Average (72.6)", hjust = 0, fontface = "bold", color = "darkred") +
+           label = "Previous Average (72.6)",  hjust = -0.5, vjust= 2, fontface = "bold", color = "darkred") +
   labs(
     title = "Reading Scores After New Program Implementation",
     subtitle = "Horizontal line shows previous district average of 72.6 points",
@@ -99,10 +102,10 @@ ggplot(aes(x = classroom, y = reading_score)) +
   )
 ```
 
-### Reflection Question 3:
+### Reflection Question 3: (3 points)
 Examine the chart you created, and suggest a better title based on the results of the data, not a description.
 
-## Task 4: Perform a hypothesis test
+## Task 4: Perform a hypothesis test (2 points)
 
 This is where we formally test the superintendent's claim that reading scores have improved. Fill in the REPLACE_ME values as needed, beginning with your hypotheses.
 
@@ -126,12 +129,12 @@ t_test_result <- t.test(
 t_test_result
 ```
 
-### Reflection Question 4:
+### Reflection Question 4:  (3 points)
 What does the p-value tell you, and what doesn't it tell you? How would you explain these results to a non-technical audience while maintaining accuracy?
 
 
 
-## Task 5: Interpreting the results for your news story
+## Task 5: Interpreting the results for your news story (2 points)
 
 Let's gather all of the important stats we'll need in one place, so we can look at the prior average, the new scores and the results of the t.test, including the confidence interval. Replace any values where it says REPLACE_ME.
 
@@ -161,9 +164,9 @@ story_stats
 
 ## Conclusion
 
-### Reflection Question 5:
+### Reflection Question 5: (4 points)
 Based on these statistics, what would be your headline and lead paragraph for this story? Is there evidence to support the superintendent's claim?
 
 
-### Reflection Question 6:
+### Reflection Question 6:  (1 point)
 What metrics or outcomes beyond test scores might be important to track for assessing reading performance?
