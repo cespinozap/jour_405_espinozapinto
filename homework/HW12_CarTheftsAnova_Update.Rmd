@@ -1,7 +1,10 @@
 ---
-title: "Prince George's County Car Theft Spike Analysis"
-author: "Your Name"
+title: "HW12 car theft anova"
+author: "Carla Espinoza-Pinto"
 ---
+
+Carla Espinoza-Pinto
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
@@ -45,7 +48,7 @@ theft_data <- theft_data |>
     date = as.Date(month),
     year = year(date),
     month_number = month(date),
-    theft_rate = (REPLACE_ME / REPLACE_ME) * 100000,
+    theft_rate = (total / population) * 100000,
     time_period = case_when(
       year < 2023 ~ "Pre-spike",
       year == 2023 ~ "Spike year",
@@ -66,13 +69,14 @@ period_summary <- theft_data |>
   )
 
 # Display the summary
-knitr::kable(period_summary, digits = 2,
-             caption = "Summary of Car Theft Rates by Time Period")
+period_summary
 ```
 
 **Task 2** Describe the results of calculating the rates for each period. What do they suggest? (3 points)
 
-ANSWER_HERE
+The mean theft rate in the pre-spike time period was 23.1 and that number rose to 59.9 during the spike year. But, during the post-strike period the number dropped to 43.3 but didn't return to the pre-spike number. These results suggest that thefts tripled during the spike year, but after the thefts didn't gi back down to the mean for the pre-spike.
+
+The median rate nearly tripled from the 22.2 in the pre-spike to 58.1 in the spike year but the sample sizes varied a great deal, with 71 observations in pre-spike versus 12 in the spike year.
 
 ## Visualizing the Spike Pattern
 
@@ -94,8 +98,9 @@ ggplot(theft_data, aes(x = date, y = theft_rate)) +
 
 **Task 3** Describe the output of this chart and then give it a better, more active title that provides the lede (3 points)
 
-ANSWER HERE
+The chart displays a more visual representation of the spike in car thefts and how quickly the numbers rose. It is evident that the drop hasn't been enough to get back to the numbers before the spike. The spike year stands out in the chart and it helps to paint a clearer picture of just how much car thefts really went up by, which was a lot.
 
+Car thefts nearly triple during Spike Year in 2023, yet to get back to Pre-Spike Numbers
 
 Now let's take a look at average theft rates.
 
@@ -130,9 +135,9 @@ For our ANOVA test, we'll compare the mean theft rates between the three time pe
 
 **Task 4** Fill in the hypotheses (2 points)
 
-- **Null Hypothesis (H0)**: ANSWER HERE
+- **Null Hypothesis (H0)**:  There will be no difference in the mean theft rates between the three time periods.
 
-- **Alternative Hypothesis (H1)**: ANSWER HERE
+- **Alternative Hypothesis (H1)**: There will be a difference in mean car theft rates amongst one of the three time periods.
 
 ### One-way ANOVA Test
 
@@ -144,7 +149,7 @@ summary(period_anova)
 
 **Task 5** Describe the result: are there real differences in the average rates between the time periods? Is this result significant? (5 points)
 
-ANSWER HERE
+There is an evident difference in the average rates between the time periods. I believe all three time had distinct results. With an F-value of 218 and a really small p-value of <2e-16, we must reject the null hypothesis. There was definitely a significant difference between the pre-spike, spike year and post-spike. Car theft rates were much higher during the spike year and since then they have remained elevated, and it is definitely due to random chance.
 
 ## Compare the differences between specific periods
 
@@ -190,4 +195,6 @@ This analysis has examined whether there are significant differences in car thef
 
 **Task 6** Describe the results of the Tukey's test and chart showing confidence intervals. Is there a significant difference between the three periods? In particular, is the difference between the pre-spike and post-spike periods real and significant? Write a headline and lede reporting these findings, focusing on the pre- and post-spike periods. (5 points)
 
-ANSWER HERE
+Spike in Car thefts yet to return to Pre-Spike Numbers
+
+The results of the Turkey's test proved that car thefts were much higher during the spike year than the pre-spike time period. After the spike year, (post-spike) it is clear that car thefts have remained high and have not gotten back to the number they used to be. The bar chart helps highlight just how different each time period is from each other, proving that they are statistically significant from each other. But, the numbers have yet to drop back down to where they used to be, unsure when pre-spike numbers wll return.
