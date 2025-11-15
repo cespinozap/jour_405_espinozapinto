@@ -1,0 +1,102 @@
+---
+title: "final_project.rmd"
+name: Carla Espinoza-Pinto
+---
+
+### Task 1: Load the Tidyverse
+
+```{r}
+library(tidyverse)
+```
+
+### Task 2: Load the Data
+
+```{r}
+college_scorecard_2021_2024 <- read_csv("https://raw.githubusercontent.com/wellsdata/Jour405_student_repo_fall_2025/refs/heads/main/project/college_scorecard_2021_2024.csv")
+```
+
+### Task 3: Calculate and Compare
+
+```{r}
+comparison <- college_scorecard_2021_2024 %>%
+  summarize(
+    mean_2021_22 = mean(`2021_22_tuitionfee_in`, na.rm = TRUE),
+    median_2021_22 = median(`2021_22_tuitionfee_in`, na.rm = TRUE),
+    min_2021_22 = min(`2021_22_tuitionfee_in`, na.rm = TRUE),
+    max_2021_22 = max(`2021_22_tuitionfee_in`, na.rm = TRUE),
+
+    mean_2023_24 = mean(`2023_24_tuitionfee_in`, na.rm = TRUE),
+    median_2023_24 = median(`2023_24_tuitionfee_in`, na.rm = TRUE),
+    min_2023_24 = min(`2023_24_tuitionfee_in`, na.rm = TRUE),
+    max_2023_24 = max(`2023_24_tuitionfee_in`, na.rm = TRUE)
+  ) %>%
+  mutate(
+    diff_mean   = mean_2023_24 - mean_2021_22,
+    diff_median = median_2023_24 - median_2021_22,
+    diff_min    = min_2023_24 - min_2021_22,
+    diff_max    = max_2023_24 - max_2021_22
+  )
+
+comparison
+
+```
+
+### Task 4: Percentage Change
+
+```{r}
+college_scorecard_2021_2024 %>%
+  mutate(
+    pct_change_instate = (
+      (`2023_24_tuitionfee_in` - `2021_22_tuitionfee_in`) /
+        `2021_22_tuitionfee_in`
+    ) * 100
+  )
+
+```
+
+### Task 5: Perecentage Change of Undergrad Enrollment
+
+```{r}
+college_scorecard_2021_2024 %>%
+  mutate(
+    pct_change_enrollment =
+      ((`2023_24_undergrad_enrollment` - `2021_22_undergrad_enrollment`) /
+        `2021_22_undergrad_enrollment`) * 100
+  ) %>%
+  summarize(
+    mean_pct_change   = mean(pct_change_enrollment, na.rm = TRUE),
+    median_pct_change = median(pct_change_enrollment, na.rm = TRUE),
+    min_pct_change    = min(pct_change_enrollment, na.rm = TRUE),
+    max_pct_change    = max(pct_change_enrollment, na.rm = TRUE)
+  )
+
+```
+-- What does it contain and what time period does it cover?
+
+The data contains tuition and enrollment data from 2021 to 2024, so the data covered will be from 2021 to 2022 and from 2023 to 2024.
+ 
+--Which columns will be most important for your analysis?
+
+tuition fees and undergraduate enrollment (2021-2022 and 2023-2024)
+
+--What's missing that you might need or want?
+
+I would want to know whether or not each institution was private or public and its ranking to see if higher ranked institutions have higher tuition than other institutions.
+
+Null Hypothesis: There was no drop in undergrad enrollment from 2021 to 2024.
+
+False. There was a drop in undergrad enrollment from 2021 to 2024.
+
+Null Hypothesis: There was no rise in in-state tuition prices from 2021 to 2024.
+
+False. There was a rise in in-state tuition prices from 2021 to 2024.
+
+Newsworthy Hypothesis: The drop in Undergrad Enrollment from 2021 to 2024 was due to the rise of in-state tuition prices.
+
+In the past 4 years, there has been a rise in tuition fee for in-state institutions. From 2021 to 2024, the median number of change was $600. The biggest increase in tuition was from J Sargeant Reynolds Community College, which experienced a percentage change of 28%. It is unclear what could be the cause of this raise of tuition fees, but most institutions have raised tuition and this could have something to do with the drop in undergrad enrollment. 
+
+From 2021 to 2024, Undergrad Enrollment went down by almost 0.41%. Although this may not seem like a notable decline in Undergrad Enrollment, the maximum percentage change was -92%, meaning that an institution lost almost all of its undergrad students. There is variability between each institution but overall, there has been a rise in tuition which could be impacting the number of undergrad enrollment.
+
+--What questions do you have about it or need help answering?
+
+What does this data mean for future tuition fees? Will tuition just continue to rise as the years go by, and will the undergraduate enrollment rate slowly decline?
