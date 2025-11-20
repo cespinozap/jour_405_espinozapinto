@@ -1,7 +1,7 @@
 
 ---
 title: "Activity: Linear Regression "
-date: 8-24-2025
+date: 11-19-2025
 ---
 
 ```{r}
@@ -27,7 +27,7 @@ schools <- read_csv("https://raw.githubusercontent.com/dwillis/jour405_files/ref
 ```
 ### Task: Create a Scatterplot and Describe the Results (2 points)
 
-Next, let's create a scatterplot to visualize the relationship between the FARMS percentage and the percentage of students who met or exceeded math expectations. We'll use ggplot2 to create the plot and add a linear regression line.
+Next, let's create a scatterplot to visualize the relationship between the FARMS  (Free and Reduced-price Meal System) percentage and the percentage of students who met or exceeded math expectations. We'll use ggplot2 to create the plot and add a linear regression line.
 
 ```{r}
 schools |>
@@ -39,7 +39,7 @@ schools |>
 
 The scatterplot shows the overall trend of the relationship between the FARMS percentage and the math test scores. The red line represents the linear regression line, which helps us understand the average relationship between the two variables. Based on what you see here, what's the relationship between FARMS percentage and math test scores?
 
-ANSWER HERE
+As the number of students in the FARMS percentage increases, the percentage of students meeting or exceeding math expectations decreases. The decreasing trend suggests that there's a negative relationship between FARMS percentage and percentage of students that met or exceeded math expectations. Schools with more students in the FARMS percentage are not meeting math expectations. This gives the impression that students in low income relatively have lower math rates than the rest of the population.
 
 
 ### Task: Linear Regression Model (3 points)
@@ -58,7 +58,7 @@ In the middle, you can see the (Intercept) is 59.57897 and the FARMS coefficient
 
 Based on what you've learned so far, is this model worth using? What does it tell us about the nature of the relationship between FARMS percentage and math scores?
 
-ANSWER HERE
+This model is not worth using because the FARMS percentage and math scores do not have a relationship. The p-value is not statistically significant and the adjusted R-squared values are low, so economic status and performance on math scores are connected. But on their own, economic status and math scores can't predict performance.
 
 ### Task: Identifying Schools with Biggest Residuals (2 points)
 
@@ -83,10 +83,12 @@ schools <- schools |>
 ```
 The schools with the biggest positive residuals are performing better than expected, while the schools with the biggest negative residuals are performing worse than expected, based on their FARMS percentage. Look at the absolute values of the residuals; what are the largest differences between the predicted result and the actual math scores?
 
-ANSWER HERE
+The largest differences between the predicted result and the actual math scores were 31 points above the expected and 35 points below the expected. The model isn't accurately displaying that some schools are doing better or worse thatn the displayed data.
 
 ## Task: Evaluate the model (3 points)
 
 A school board member has said at a meeting that elementary schools with fewer students on free and reduced price meals do better on standardized math tests. Describe what conclusions you'd draw from this model's results and how it would influence a story pitch about the school board member and math scores.
 
-ANSWER HERE
+Eventhough the model shows that students on free and reduced price means score a bit lower, this model can't support that there's a real connection between whether or not students with free lunch score worse on math scores than students that pay for lunch.
+
+I believe that the school board member is wrong and there would have to be tests conducted to prove his theory right. But even then, it's ethically wrong because student that receive free lunch are just as capable as other students with more opportunities to meet the math score standards. 
