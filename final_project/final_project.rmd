@@ -13,7 +13,22 @@ library(tidyverse)
 
 ```{r}
 college_scorecard_2021_2024 <- read_csv("https://raw.githubusercontent.com/wellsdata/Jour405_student_repo_fall_2025/refs/heads/main/project/college_scorecard_2021_2024.csv")
+glimpse(college_scorecard_2021_2024)
+names(college_scorecard_2021_2024)
 ```
+The key columns for tuition costs are 
+- 2021_22_tuitionfee_in which stands for in-state tuition for the school year of 2021-22
+- 2023_24_tuitionfee_in which stands for in-state tuition for the school year of 2023-24
+
+The key columns for enrollment are
+- 2021_22_undergrad_enrollment which stands for the number of undergraduate students that were enrolled for the school year of 2021-22
+- 2023_24_undergrad_enrollment which stands for the number of undergraduate students that were enrolled for the school year of 2023-24
+
+Other key columns are
+instm which stood for the institution name
+city, state stood for the location of the institution 
+
+Overall, tuition and enrollment values are presented as columns and each row holds a different institution. The data compares both changes in tuition and changes in enrollment over time in each institution. 
 
 ### Task 3: Calculate and Compare
 
@@ -39,9 +54,59 @@ comparison <- college_scorecard_2021_2024 %>%
 
 comparison
 
-```
+sd_results <- college_scorecard_2021_2024 %>%
+  summarize(
+    sd_2021_22_tuition = sd(`2021_22_tuitionfee_in`, na.rm = TRUE),
+    sd_2023_24_tuition = sd(`2023_24_tuitionfee_in`, na.rm = TRUE),
+    
+    sd_2021_22_enrollment = sd(`2021_22_undergrad_enrollment`, na.rm = TRUE),
+    sd_2023_24_enrollment = sd(`2023_24_undergrad_enrollment`, na.rm = TRUE)
+  )
 
-### Task 4: Percentage Change
+sd_results
+
+```
+The calculation of standard deviation measures how far apart the numbers are. A high standard deviation for tuition cost would mean that there are institutions that are much more expensive compared to the others. A high standard deviation for undergraduate enrollment would mean that institutions vary based on the total student population.
+
+### Task 4: T-test
+
+```{r}
+t_test_tuition <- t.test(
+  college_scorecard_2021_2024$`2021_22_tuitionfee_in`,
+  college_scorecard_2021_2024$`2023_24_tuitionfee_in`,
+  paired = TRUE,
+  na.rm = TRUE
+)
+
+t_test_tuition
+
+t_test_enrollment <- t.test(
+  college_scorecard_2021_2024$`2021_22_undergrad_enrollment`,
+  college_scorecard_2021_2024$`2023_24_undergrad_enrollment`,
+  paired = TRUE,
+  na.rm = TRUE
+)
+
+t_test_enrollment
+
+broom::tidy(t_test_tuition)
+broom::tidy(t_test_enrollment)
+
+
+```
+In calculating the t-value, it measures how big is the difference between the two years, compared to the amount of variety in the data. A large positive t-value means that tuition/enrollment increased. A large negative t-value would mean that tuition/enrollment decreased. A t-value that was closer to zero would mean that there was only a slight change.
+
+The df, degrees of freedom is calculated by subtracting the number of institutions by 1. 
+
+The p-value calculates whether the changes were by random chance or if they were real changes in the data. A p-value < 0.05 is statistically significant, meaning that the null hypothesis would be rejected and that tuition/enrollment did have a real change. A p value equal to or > 0.05 would mean that it was not significant. In this case, the null hypotheis would fail to be rejected and the changes observed were due to random chance. 
+
+95% confidence interval 
+
+The interval shows the range from which the average change lies. If the confidence interval does not include 0, the change is statistically significant. This interval points out just how big the change was, whether it was a huge increase or huge decrease, viseversa.
+
+The mean of the differences is the average change between both years. A positive value would mean that the value increased, a negative value would mean that the value decreased. 
+
+### Task 5: Percentage Change
 
 ```{r}
 college_scorecard_2021_2024 %>%
@@ -54,7 +119,7 @@ college_scorecard_2021_2024 %>%
 
 ```
 
-### Task 5: Perecentage Change of Undergrad Enrollment
+### Task 6: Perecentage Change of Undergrad Enrollment
 
 ```{r}
 college_scorecard_2021_2024 %>%
@@ -71,6 +136,44 @@ college_scorecard_2021_2024 %>%
   )
 
 ```
+
+### Task 7: Data visualization
+
+```{r}
+college_changes <- college_scorecard_2021_2024 %>%
+  mutate(
+    tuition_change = `2023_24_tuitionfee_in` - `2021_22_tuitionfee_in`,
+    enrollment_change = `2023_24_undergrad_enrollment` - `2021_22_undergrad_enrollment`
+  ) %>%
+  drop_na(tuition_change, enrollment_change)
+
+ggplot(college_changes, aes(x = tuition_change, y = enrollment_change)) +
+  geom_point(alpha = 0.6, color = "pink") +
+  labs(
+    title = "Tuition Change vs Enrollment Change",
+    x = "Change in Tuition ($)",
+    y = "Change in Undergraduate Enrollment"
+  )
+
+```
+### Task 8: Z-score
+
+```{r}
+college_changes <- college_changes %>%
+  mutate(
+    z_tuition_change = (tuition_change - mean(tuition_change, na.rm = TRUE)) /
+                       sd(tuition_change, na.rm = TRUE),
+
+    z_enrollment_change = (enrollment_change - mean(enrollment_change, na.rm = TRUE)) /
+                          sd(enrollment_change, na.rm = TRUE)
+  )
+head(college_changes[, c("tuition_change", "z_tuition_change",
+                         "enrollment_change", "z_enrollment_change")])
+
+```
+
+Most tuition and enrollment changes are little to no change, with z-scores between -0.85 and -0.12, which means they are below average. One college's tuition dropped $732 while all the other colleges had little to no change. Changes in enrollment can be seen with z-scores from -0.50 to 0.11. This shows that most institutions had a fair increase or decrease in students. There was nothing out of the norm that raised a question, it all seemed pretty normal.
+
 -- What does it contain and what time period does it cover?
 
 The data contains tuition and enrollment data from 2021 to 2024, so the data covered will be from 2021 to 2022 and from 2023 to 2024.
@@ -93,9 +196,15 @@ False. There was a rise in in-state tuition prices from 2021 to 2024.
 
 Newsworthy Hypothesis: The drop in Undergrad Enrollment from 2021 to 2024 was due to the rise of in-state tuition prices.
 
-In the past 4 years, there has been a rise in tuition fee for in-state institutions. From 2021 to 2024, the median number of change was $600. The biggest increase in tuition was from J Sargeant Reynolds Community College, which experienced a percentage change of 28%. It is unclear what could be the cause of this raise of tuition fees, but most institutions have raised tuition and this could have something to do with the drop in undergrad enrollment. 
+In the past 4 years, there has been a rise in tuition fee for in-state institutions. This rise in tuition was observed from data retrieved from the U.S. Department of Education's College Scorecard and included 3 years of data from over 1,500 institutions. 
+
+From 2021 to 2024, the median number of change was $600. The biggest increase in tuition was from J Sargeant Reynolds Community College, which experienced a percentage change of 28%. It is unclear what could be the cause of this raise of tuition fees, but most institutions have raised tuition and this could have something to do with the drop in undergrad enrollment. 
+
+From the standard deviation data retrieved, it's clear that the average college's in-state tuition in 2021-22 was around $13,338 above or below the average tuition. This means that tuition prices vary a lot by institution. Some institutions have a relatively low tuition while some schools have an extremely low tuition. 
 
 From 2021 to 2024, Undergrad Enrollment went down by almost 0.41%. Although this may not seem like a notable decline in Undergrad Enrollment, the maximum percentage change was -92%, meaning that an institution lost almost all of its undergrad students. There is variability between each institution but overall, there has been a rise in tuition which could be impacting the number of undergrad enrollment.
+
+After conducting the t-test, it is evident that the t-value of -0.12 means that there was little to no difference between both years. The p-value of 0.90 also proves that the probability was not statistically significant, meaning that there was no real change between both years. Therefore, the differences were due to 90% random chance so we fail to reject the null hypothesis.
 
 --What questions do you have about it or need help answering?
 
