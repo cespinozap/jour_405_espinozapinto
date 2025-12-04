@@ -1,7 +1,7 @@
 
 ---
 title: "Multiple Regression Analysis in R"
-date: 8-24-2025
+date: 12-3-2025
 ---
 
 # Introduction
@@ -46,7 +46,7 @@ The coefficients tell us the estimated effect of each independent variable on th
 *   **Takeaways**: The coefficient is 0.150593, suggesting that each additional takeaway is associated with an increase in wins by about 0.151, which is near the threshold of significance (p = 0.07928). This suggests a potentially meaningful, though not conventionally statistically significant, positive effect on wins.
 *   **Points Scored**: The coefficient is 0.038732, which is significant (p = 0.00665). This indicates that each additional point scored is associated with an increase in wins by about 0.039, suggesting a clear and meaningful impact.
 
-### Model Fit (3 points)
+### Model Fit
 
 *   **Residual Standard Error**: The RSE of 2.072 tells us that the typical prediction by the model deviates from the actual number of wins by about 2.072 wins.
 *   **Multiple R-squared**: 0.6232 indicates that about 62.32% of the variability in wins is explained by the model, which is relatively high, suggesting a good fit.
@@ -55,7 +55,7 @@ The coefficients tell us the estimated effect of each independent variable on th
 
 Is this a useful model, based on what you've seen? Why?
 
-ANSWER HERE
+Based on what I've seen, this is a useful model because it points out any variation in the data. In specific, the variation is 62% whcich means that there were patterns in the data and it wasn't just due to random chance. The data helps to clarify why certain teams won more than other teams. In conclusion, the model is effective in pointing out trends in the data, but it's ineffective to make predictions since there is a prediction error, making the wins be off by an average of 2 wins.
 
 ## Correlation Analysis
 
@@ -75,14 +75,16 @@ corr_matrix <- cor(selected_vars)
 corrplot(corr_matrix, method = "circle")
 ```
 
-## Results Interpretation (4 points)
+## Results Interpretation
 
 The results from our correlation analysis show the strength of the relationships between the number of wins and factors like yards gained, takeaways, and points scored. High positive correlations indicate strong relationships where increases in one variable are associated with increases in another. Conversely, negative correlations suggest an inverse relationship. By understanding these dynamics, journalists can better explain the factors that contribute to a team's success or failure in a season.
 
 Which of these three factors - Yards Gained, Takeaways and Points Scored - have the most impact on wins? Are there any that do not seem impactful at all?
 
-ANSWER HERE
+I believe that Points Scored has the most impact on wins, as well as Takeaways. However, Yards Gained does not seem impactful at all. Points Scored gave the conclusion that the teams that win more games are the ones that tend to score more points. Takeaways also make effective connections between the data but it's not as reliable as Points Scored. Yards Gained has no impact because the effect is small and not statistically significant.
 
-## Using the Model (3 points)
+## Using the Model
 
 Without using the words "multiple regression model", describe how you could use this model to cover a team or game.
+
+This model could be used to cover a team or a game in the sense that it highlights which specific performance from a team led to more wins. Points Scored and Takeaways are two  factors that could be used to explain why a team is performing a certain way, whether that's winning or losing. It could emphasize a team's strengths and weaknesses in order to foresee how the rest of the season would play out.
