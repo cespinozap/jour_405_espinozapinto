@@ -1,7 +1,7 @@
 ---
 title: "Multiple Regression Analysis: Maryland Voter Turnout"
-name: "YOUR NAME HERE"
-date: 8-24-2025
+name: Carla Espinoza-Pinto
+date: 12-7-2025
 ---
 
 # Introduction
@@ -27,7 +27,9 @@ head(md_turnout)
 
 Before building our model, let's explore the data to understand the variables and their relationships. Examine the correlation matrix to see how the independent variables relate to each other and to the dependent variable (voter turnout). Which variables seem to be correlated? Are there any that are not correlated at all? Also look at the multiple scatterplots. Which variables seem to have a linear relationship with the dependent variable? Which do not?
 
-ANSWER HERE
+The independent variables that relate to each other and to the dependent variable, voter turnout are income, education, and age. These variables have a strong relationship with one another and are associated with the voter turnout. These variables have a linear relationship with the dependent variable on the scatterplots.
+
+The independent variables that aren't correlated to the voter turnout are population and unemployment. There is less of a trend between these variables than the first two. There is correlation for Percent white but the scatterplot shows more variabilty indicating that there is minor correlation.
 
 
 ```{r}
@@ -90,7 +92,7 @@ The coefficients tell us the estimated effect of each independent variable on th
 
 Examine the output of the model, checking the coefficients, residuals, and overall model fit. How well does this multiple variable model predict turnout? Do any of the variables seem to be insignificant? Is this a useful model, based on what you've seen? Why?
 
-ANSWER HERE
+The coefficients of the model which are the variables tell us whether or not there is a positive or negative relationship in terms of the voter turnout. Income, education and age are all variables that have a positive relationship with the overall voter turnout. On the other hand, population and employment don't have a positive relationship with voter turnout, therefore, are not considered statistically significant. The residuals demonstrate that the output of the model doesn't have any major outliers. So the overall fit of the model would be that it's efficient but there's some minor errors that could be improved in order to make the model more useful.
 
 ```{r}
 # Build initial model with all predictors
@@ -104,7 +106,11 @@ summary(initial_model)
 
 Create three alternative models by adding or removing variables to see if we can improve the model's performance. Turnout will always be the dependent variable, but you should alter the independent variables by removing or adding some. Then compare the models using adjusted R-squared values. Are any of the models significantly better than the others?
 
-ANSWER HERE
+My alternative models would specifically focus on 1. income, 2. median age and 3. percent white because these were the independent variabeles that were most significant and resulted in a better execution of the dependent variable, voter turnout. The adjusted R-squared values show that these variables have better results.
+
+By removing population, education and unemployment, it removes unnecessary variables that made little to no difference on the voter turnout. By removing these variables, it leaves the meaningful variables and removes the variables that don't contribute towards voter turnout.
+
+The simpler version is better because it removes unecessary variables.
 
 ```{r}
 # Model 2
@@ -145,4 +151,4 @@ ggplot(model_comparison, aes(x = reorder(Model, Adjusted_R_squared), y = Adjuste
 
 Without using the words "multiple regression model", describe how you could use this analysis to cover an election or voter participation story.
 
-ANSWER HERE
+I could use this analysis to cover an election or voter participation story by highlight the specific education levels, specific age range and specific social class that result in higher vs lower voter turnout. This could help point out specific patters in which there are less or more voters in order to reinforce those groups or improve the outreach from elected officials.
